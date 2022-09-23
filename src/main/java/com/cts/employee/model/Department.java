@@ -1,4 +1,4 @@
-package com.example.employee.model;
+package com.cts.employee.model;
 
 public abstract class Department {
 

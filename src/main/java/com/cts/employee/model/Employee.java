@@ -1,4 +1,4 @@
-package com.example.employee.model;
+package com.cts.employee.model;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
