@@ -1,7 +1,8 @@
 package com.cts.employee.model;
 
 public abstract class Department {
-
+    String departmentName;
+    int departmentId;
     abstract int getNumberOfEmployees();
     abstract String getDepartmentDescription();
 
@@ -19,12 +20,11 @@ sealed class Engineering extends Department permits Development, Testing, Data  
         return "At engineering, amazing products are built";
     }
 
-    public static void main(String[] args) {
-        Engineering engineering = new Engineering();
-    }
 }
 
-final class Development extends Engineering {}
+final class Development extends Engineering {
+    String departmentName = "Development";
+}
 final class Testing extends Engineering {}
 final class Data extends Engineering {}
 
