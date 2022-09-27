@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public record Employee(@Id
                        @GeneratedValue(strategy = GenerationType.AUTO)
                        Long id,
-                       String name, LocalDate dateOfBirth, Department department) {
+                       String name, LocalDate dateOfBirth, String department) {
 }
 
 
