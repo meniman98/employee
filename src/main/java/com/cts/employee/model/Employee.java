@@ -4,15 +4,24 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Data;
 
 
 import java.time.LocalDate;
 
 @Entity
-public record Employee(@Id
-                       @GeneratedValue(strategy = GenerationType.AUTO)
-                       Long id,
-                       String name, LocalDate dateOfBirth, String department) {
+@Data
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
+    private String name;
+    private LocalDate dateOfBirth;
+    private String department;
+
+
+
 }
 
 
