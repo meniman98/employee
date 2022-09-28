@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,10 +19,16 @@ public class EmployeeController {
     EmployeeRepo repo;
 
     @GetMapping("/{id}")
-    Employee getEmployeeById(@PathVariable("id") Long id) {
+    Employee getEmployee(@PathVariable("id") Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
+    @GetMapping("/")
+    List<Employee> getAllEmployees() {
+        return repo.findAll();
+    }
+
 
     @PostMapping("/")
     Employee createEmployee(@RequestBody Employee employee) {
