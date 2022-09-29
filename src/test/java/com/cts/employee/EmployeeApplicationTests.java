@@ -39,10 +39,10 @@ class EmployeeApplicationTests {
 
 	@Test
 	void getEmployeeReturnsEmployeeInstanceAnd200Status() throws Exception {
-		mockMvc.perform(get(BASE_URL + EMPLOYEE_END_POINT + "/1")
+		mockMvc.perform(get(EMPLOYEE_END_POINT + "/{id}", 1)
 		.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
-				.andExpect(jsonPath("$.id", Matchers.is(1)));
+				.andExpect(jsonPath("$.id").value(1));
 	}
 
 }
