@@ -20,13 +20,6 @@ public class EmployeeApplication {
         SpringApplication.run(EmployeeApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner runner(EmployeeRepo repo) {
-        return (args -> {
-            for (int i = 0; i < 10; i++) {
-                repo.save(new Employee());
-            }
-        });
-    }
+
 
 }
