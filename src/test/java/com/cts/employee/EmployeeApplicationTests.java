@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +24,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 import static com.cts.employee.Utils.BASE_URL;
 import static com.cts.employee.Utils.EMPLOYEE_END_POINT;
@@ -63,7 +66,7 @@ class EmployeeApplicationTests {
         mockMvc.perform(get(EMPLOYEE_END_POINT + "/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$", hasSize(10)));
+                .andExpect(jsonPath("$", isA(Iterable.class)));
     }
 
     @Test
