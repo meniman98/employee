@@ -2,6 +2,7 @@ package com.cts.employee.controller;
 
 import com.cts.employee.model.Employee;
 import com.cts.employee.repo.EmployeeRepo;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,12 @@ public class EmployeeController {
 
 
     @PostMapping("/")
-    Employee createEmployee(@RequestBody Employee employee) {
+    Employee createEmployee(@RequestBody @Valid Employee employee) {
         return repo.save(employee);
     }
 
     @PutMapping("/{id}")
-    Employee editEmployee(@PathVariable Long id, @RequestBody Employee newEmployee) {
+    Employee editEmployee(@PathVariable Long id, @RequestBody @Valid Employee newEmployee) {
         return repo.findById(id)
                 .map(oldEmployee -> {
                     oldEmployee.setName(newEmployee.getName());
