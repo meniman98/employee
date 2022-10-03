@@ -1,6 +1,7 @@
 package com.cts.employee;
 
 import com.cts.employee.model.Employee;
+import com.cts.employee.repo.EmployeeRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -22,15 +23,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-import static com.cts.employee.Utils.BASE_URL;
-import static com.cts.employee.Utils.EMPLOYEE_END_POINT;
+import static com.cts.employee.Utils.*;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,6 +46,9 @@ class EmployeeApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private EmployeeRepo repo;
 
     @Test
     void contextLoads() {
@@ -67,7 +72,8 @@ class EmployeeApplicationTests {
         mockMvc.perform(get(EMPLOYEE_END_POINT + "/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$", isA(Iterable.class)));
+                .andExpect(jsonPath("$", isA(Iterable.class)))
+                .andDo(print());
     }
 
     @Test
@@ -80,16 +86,17 @@ class EmployeeApplicationTests {
 
     @Test
     void createEmployeeAndReturn200Status() throws Exception {
-        Employee employee = new Employee(1L, "Bob", LocalDate.now(), "engineering");
+        Employee employee = new Employee("Bob", BIRTHDAY, "engineering");
 
         mockMvc.perform(post(EMPLOYEE_END_POINT + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(employee))).andExpect(status().isOk());
+                .content(toJson(employee))).andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
     void editEmployeeAndReturn200Status() throws Exception {
-        Employee newEmployee = new Employee(1L, "Huncho Jack", LocalDate.now(), "engineering");
+        Employee newEmployee = new Employee("Huncho Jack", BIRTHDAY, "engineering");
         mockMvc.perform(put(EMPLOYEE_END_POINT + "/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(newEmployee)))
@@ -110,5 +117,38 @@ class EmployeeApplicationTests {
                 .andExpect(jsonPath("$").doesNotExist());
     }
 
+    //    Validation tests
+    @Test
+    void createInvalidEmployeeThenReturn400() throws Exception {
+//        Date of birth is in the past
+        Employee employee = new Employee("Bob", LocalDate.now(), "Engineering");
+//        Name is too short
+        Employee employee1 = new Employee("B", BIRTHDAY, "Engineering");
+//        Department can't be blank
+        Employee employee2 = new Employee("Bob", BIRTHDAY, "");
+//        Name can't be empty
+        Employee employee3 = new Employee("", BIRTHDAY, "Engineering");
+
+        List<Employee> employeeList = List.of(employee, employee1, employee2);
+
+        for (Employee employeeItem : employeeList) {
+            mockMvc.perform(post(EMPLOYEE_END_POINT + "/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(toJson(employeeItem))).andExpect(status().is4xxClientError())
+                    .andDo(print());
+        }
+    }
+
+    @Test
+    void assertThatIdIsAutomaticallyGenerated() throws Exception {
+//        employee without ID
+        Employee employee = new Employee("Bob", BIRTHDAY, "Engineering");
+        repo.save(employee);
+        mockMvc.perform(get(EMPLOYEE_END_POINT + "/" + employee.getId().toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.id").value(employee.getId()))
+                .andDo(print());
+    }
 
 }

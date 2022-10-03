@@ -26,13 +26,12 @@ public class Employee {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
-    @NotNull(message = "Department can't be empty")
+    @NotEmpty(message = "Department can't be empty")
     private String department;
 
     public Employee() {}
 
-    public Employee(Long id, String name, LocalDate dateOfBirth, String department) {
-        this.id = id;
+    public Employee(String name, LocalDate dateOfBirth, String department) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.department = department;
