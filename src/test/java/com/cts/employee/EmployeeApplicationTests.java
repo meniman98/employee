@@ -39,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         classes = EmployeeApplication.class)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
+// TODO: add integrated tests and comments at the end
 class EmployeeApplicationTests {
 
     @Autowired
