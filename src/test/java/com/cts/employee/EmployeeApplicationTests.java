@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.hamcrest.beans.HasPropertyWithValue;
+import org.hamcrest.core.Every;
 import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +32,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.cts.employee.Utils.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -149,6 +152,27 @@ class EmployeeApplicationTests {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.id").value(employee.getId()))
                 .andDo(print());
+    }
+
+    @Test
+    void getAllEmployeesByDepartmentAndByName() {
+        List<Employee> employeeList = repo.findByDepartment("engineering");
+        assertThat(employeeList, everyItem
+                (hasProperty("department", is("engineering"))));
+
+        Employee employee1 = new Employee("Bob", BIRTHDAY, "sales");
+        Employee employee2 = new Employee("Bob", BIRTHDAY, "sales");
+        Employee employee3 = new Employee("Bob", BIRTHDAY, "sales");
+        List<Employee> salesList = List.of(employee1, employee2, employee3);
+        for (Employee employee: salesList) {
+            repo.save(employee);
+        }
+        assertThat(salesList, everyItem
+                (hasProperty("department", is("sales"))));
+
+        assertThat(salesList, everyItem
+                (hasProperty("name", is("Bob"))));
+
     }
 
 }

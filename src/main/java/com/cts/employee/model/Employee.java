@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "employees")
-// TODO add validation
 public class Employee {
 
     @Id
