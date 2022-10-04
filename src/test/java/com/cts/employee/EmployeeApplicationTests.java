@@ -3,20 +3,8 @@ package com.cts.employee;
 import com.cts.employee.model.Employee;
 import com.cts.employee.repo.EmployeeRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.hamcrest.beans.HasPropertyWithValue;
-import org.hamcrest.core.Every;
-import org.json.JSONArray;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +13,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
-import static com.cts.employee.Utils.*;
+import static com.cts.employee.Utils.BIRTHDAY;
+import static com.cts.employee.Utils.EMPLOYEE_END_POINT;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -132,7 +119,7 @@ class EmployeeApplicationTests {
 //        Name can't be empty
         Employee employee3 = new Employee("", BIRTHDAY, "Engineering");
 
-        List<Employee> employeeList = List.of(employee, employee1, employee2);
+        List<Employee> employeeList = List.of(employee, employee1, employee2, employee3);
 
         for (Employee employeeItem : employeeList) {
             mockMvc.perform(post(EMPLOYEE_END_POINT + "/")

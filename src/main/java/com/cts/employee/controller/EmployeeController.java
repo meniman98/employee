@@ -1,61 +1,48 @@
 package com.cts.employee.controller;
 
 import com.cts.employee.model.Employee;
-import com.cts.employee.repo.EmployeeRepo;
+import com.cts.employee.service.EmployeeServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/employees")
-// TODO: add a service
-public class EmployeeController {
+public class EmployeeController implements com.cts.employee.service.EmployeeService {
 
     @Autowired
-    EmployeeRepo repo;
+    EmployeeServiceImpl service;
 
+    @Override
     @GetMapping("/{id}")
-    Employee getEmployee(@PathVariable("id") Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public Employee getEmployee(@PathVariable("id") Long id) {
+        return service.getEmployee(id);
     }
 
+    @Override
     @GetMapping("/")
-    List<Employee> getAllEmployees() {
-        return repo.findAll();
+    public List<Employee> getAllEmployees() {
+        return service.getAllEmployees();
     }
 
 
+    @Override
     @PostMapping("/")
-    Employee createEmployee(@RequestBody @Valid Employee employee) {
-        return repo.save(employee);
+    public Employee createEmployee(@RequestBody @Valid Employee employee) {
+        return service.createEmployee(employee);
     }
 
+    @Override
     @PutMapping("/{id}")
-    Employee editEmployee(@PathVariable Long id, @RequestBody @Valid Employee newEmployee) {
-        return repo.findById(id)
-                .map(oldEmployee -> {
-                    oldEmployee.setName(newEmployee.getName());
-                    oldEmployee.setDateOfBirth(newEmployee.getDateOfBirth());
-                    oldEmployee.setDepartment(newEmployee.getDepartment());
-                    return repo.save(oldEmployee);
-                })
-                .orElseGet(() -> {
-                    newEmployee.setId(id);
-                    return repo.save(newEmployee);
-                });
+    public Employee editEmployee(@PathVariable Long id, @RequestBody @Valid Employee newEmployee) {
+        return service.editEmployee(id, newEmployee);
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    void deleteEmployee(@PathVariable Long id) {
-        if (repo.existsById(id)) {
-            repo.deleteById(id);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+    public void deleteEmployee(@PathVariable Long id) {
+        service.deleteEmployee(id);
     }
 }
