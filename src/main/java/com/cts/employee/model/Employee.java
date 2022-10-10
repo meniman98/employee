@@ -19,12 +19,15 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotEmpty(message = "Name can't be empty")
     @Size(min = 2, message = "Name must be at least 2 characters")
     private String name;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
+
     @NotEmpty(message = "Department can't be empty")
     private String department;
 

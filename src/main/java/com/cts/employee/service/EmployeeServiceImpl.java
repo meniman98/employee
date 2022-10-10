@@ -15,6 +15,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     EmployeeRepo repo;
 
+//    TODO: error code, error message
     @Override
     public Employee getEmployee(Long id) {
         return repo.findById(id)

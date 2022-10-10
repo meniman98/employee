@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.cts.employee.Utils.BIRTHDAY;
 import static com.cts.employee.Utils.EMPLOYEE_END_POINT;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -34,6 +33,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // TODO: add integrated tests and comments at the end
 class EmployeeApplicationTests {
 
+    public static final LocalDate BIRTHDAY = LocalDate.of(1998, 5, 8);
+
+    private static final Employee validEmployee =
+            new Employee("Bob", BIRTHDAY, "engineering");
+
+    private static String getJSONValidEmployee() {
+        Employee validEmployee =
+                new Employee("Bob", BIRTHDAY, "engineering");
+        return toJson(validEmployee);
+    }
     @Autowired
     private MockMvc mockMvc;
 
@@ -44,7 +53,7 @@ class EmployeeApplicationTests {
     void contextLoads() {
     }
 
-    private String toJson(final Object object) {
+    private static String toJson(final Object object) {
         try {
 
             ObjectMapper mapper = JsonMapper.builder()
@@ -76,21 +85,18 @@ class EmployeeApplicationTests {
 
     @Test
     void createEmployeeAndReturn200Status() throws Exception {
-        Employee employee = new Employee("Bob", BIRTHDAY, "engineering");
-
         mockMvc.perform(post(EMPLOYEE_END_POINT + "/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(employee))).andExpect(status().isOk())
+                .content(getJSONValidEmployee())).andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
     void editEmployeeAndReturn200Status() throws Exception {
-        Employee newEmployee = new Employee("Huncho Jack", BIRTHDAY, "engineering");
         mockMvc.perform(put(EMPLOYEE_END_POINT + "/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(newEmployee)))
-                .andExpect(jsonPath("$.name", is("Huncho Jack")));
+                .content(getJSONValidEmployee()))
+                .andExpect(jsonPath("$.name", is("Bob")));
     }
 
     @Test
