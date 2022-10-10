@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.cts.employee.Utils.EMPLOYEE_END_POINT;
 
@@ -20,7 +21,7 @@ public class EmployeeController  {
 // TODO: unit tests
     @GetMapping("/{id}")
 //    /employees?name=bob
-    public Employee getEmployee(@PathVariable("id") Long id) {
+    public Optional<Employee> getEmployee(@PathVariable("id") Long id) {
         return service.getEmployee(id);
     }
 

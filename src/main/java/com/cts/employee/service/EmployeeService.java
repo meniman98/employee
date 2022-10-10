@@ -3,10 +3,11 @@ package com.cts.employee.service;
 import com.cts.employee.model.Employee;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeService {
 
-    Employee getEmployee(Long id);
+    Optional<Employee> getEmployee(Long id);
 
     List<Employee> getAllEmployees();
 

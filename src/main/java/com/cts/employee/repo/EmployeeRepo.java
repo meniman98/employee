@@ -21,4 +21,6 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
     Optional<Employee> findByDateOfBirth(@NonNull LocalDate dateOfBirth);
 
 
+    @Override
+    Optional<Employee> findById(Long aLong);
 }
