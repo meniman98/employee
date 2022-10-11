@@ -109,8 +109,7 @@ class EmployeeApplicationTests {
     @Test
     void deleteWithNonExistingIdReturn404Status() throws Exception {
         mockMvc.perform(delete(EMPLOYEE_END_POINT + "/0"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$").doesNotExist());
+                .andExpect(status().isNotFound());
     }
 
     //    Validation tests

@@ -1,5 +1,6 @@
 package com.cts.employee.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -32,4 +33,13 @@ public class ControllerExceptionHandler {
         errorObject.setTimeStamp(LocalTime.now());
         return new ResponseEntity<ErrorObject>(errorObject, exception.getStatusCode());
     }
+
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<ErrorObject> genericExceptionOrError(Throwable throwable) {
+        errorObject.setReason(throwable.getMessage());
+        errorObject.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorObject.setTimeStamp(LocalTime.now());
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
