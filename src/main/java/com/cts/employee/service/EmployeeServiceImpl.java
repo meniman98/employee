@@ -12,8 +12,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
-import static java.lang.String.format;
-
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -23,16 +21,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public static final String EMPLOYEE_NOT_FOUND = "Employee with ID {0} was not found";
 
-//    TODO: error code, error message
     @Override
-    public Optional<Employee> getEmployee(Long id) {
-        if (repo.existsById(id)) {
-            return repo.findById(id);
-        }
-        else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    MessageFormat.format(EMPLOYEE_NOT_FOUND, id));
-        }
+    public Employee getEmployee(Long id) {
+        return repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                MessageFormat.format(EMPLOYEE_NOT_FOUND, id)));
     }
 
     @Override

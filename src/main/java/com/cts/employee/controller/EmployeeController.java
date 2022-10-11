@@ -21,7 +21,7 @@ public class EmployeeController  {
 // TODO: unit tests
     @GetMapping("/{id}")
 //    /employees?name=bob
-    public Optional<Employee> getEmployee(@PathVariable("id") Long id) {
+    public Employee getEmployee(@PathVariable("id") Long id) {
         return service.getEmployee(id);
     }
 

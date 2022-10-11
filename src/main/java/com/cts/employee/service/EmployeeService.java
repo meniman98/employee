@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface EmployeeService {
 
-    Optional<Employee> getEmployee(Long id);
+    Employee getEmployee(Long id);
 
     List<Employee> getAllEmployees();
 
