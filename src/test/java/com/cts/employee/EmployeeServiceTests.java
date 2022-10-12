@@ -71,9 +71,15 @@ public class EmployeeServiceTests {
 
     @Test
     void getAllEmployeesReturnsNullWhenGivenNull() {
-        List<Employee> nullList = null;
         when(repo.findAll()).thenReturn(null);
         List<Employee> retrievedEmployeeList = service.getAllEmployees();
         assertNull(retrievedEmployeeList);
+    }
+
+    @Test
+    void editEmployeeSuccess() {
+        when(repo.findById(1L)).thenReturn(Optional.of(employee));
+//        Employee newEmployee = service.editEmployee()
+
     }
 }

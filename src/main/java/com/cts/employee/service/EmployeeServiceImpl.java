@@ -10,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -38,18 +37,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee editEmployee(Long id, Employee newEmployee) {
+    public Employee editEmployee(Long id, Employee newDetails) {
         return repo.findById(id)
-                .map(oldEmployee -> {
-                    oldEmployee.setName(newEmployee.getName());
-                    oldEmployee.setDateOfBirth(newEmployee.getDateOfBirth());
-                    oldEmployee.setDepartment(newEmployee.getDepartment());
-                    return repo.save(oldEmployee);
-                })
-                .orElseGet(() -> {
-                    newEmployee.setId(id);
+                .map(newEmployee -> {
+                    newEmployee.setName(newDetails.getName());
+                    newEmployee.setDateOfBirth(newDetails.getDateOfBirth());
+                    newEmployee.setDepartment(newDetails.getDepartment());
                     return repo.save(newEmployee);
-                });
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        MessageFormat.format(EMPLOYEE_NOT_FOUND, id)));
     }
 
     @Override
