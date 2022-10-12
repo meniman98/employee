@@ -39,11 +39,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee editEmployee(Long id, Employee newDetails) {
         return repo.findById(id)
-                .map(newEmployee -> {
-                    newEmployee.setName(newDetails.getName());
-                    newEmployee.setDateOfBirth(newDetails.getDateOfBirth());
-                    newEmployee.setDepartment(newDetails.getDepartment());
-                    return repo.save(newEmployee);
+                .map(employee -> {
+                    employee.setName(newDetails.getName());
+                    employee.setDateOfBirth(newDetails.getDateOfBirth());
+                    employee.setDepartment(newDetails.getDepartment());
+                    return repo.save(employee);
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         MessageFormat.format(EMPLOYEE_NOT_FOUND, id)));

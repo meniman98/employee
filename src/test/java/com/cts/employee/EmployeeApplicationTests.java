@@ -35,15 +35,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EmployeeApplicationTests {
 
 
-
-    private static final Employee validEmployee =
-            new Employee("Bob", BIRTHDAY, "engineering");
-
     private static String getJSONValidEmployee() {
         Employee validEmployee =
                 new Employee("Bob", BIRTHDAY, "engineering");
         return toJson(validEmployee);
     }
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -97,7 +94,9 @@ class EmployeeApplicationTests {
         mockMvc.perform(put(EMPLOYEE_END_POINT + "/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getJSONValidEmployee()))
-                .andExpect(jsonPath("$.name", is("Bob")));
+                .andExpect(jsonPath("$.name", is("Bob")))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
@@ -157,7 +156,7 @@ class EmployeeApplicationTests {
         Employee employee2 = new Employee("Bob", BIRTHDAY, "sales");
         Employee employee3 = new Employee("Bob", BIRTHDAY, "sales");
         List<Employee> salesList = List.of(employee1, employee2, employee3);
-        for (Employee employee: salesList) {
+        for (Employee employee : salesList) {
             repo.save(employee);
         }
         assertThat(salesList, everyItem

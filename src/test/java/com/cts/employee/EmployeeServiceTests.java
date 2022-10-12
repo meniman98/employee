@@ -10,8 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +22,7 @@ import static com.cts.employee.TestUtils.BIRTHDAY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTests {
@@ -78,8 +81,36 @@ public class EmployeeServiceTests {
 
     @Test
     void editEmployeeSuccess() {
+//        given
+        Employee newEmployee = new Employee("Barack-Obama", BIRTHDAY, "politics");
+//        when
         when(repo.findById(1L)).thenReturn(Optional.of(employee));
-//        Employee newEmployee = service.editEmployee()
+        when(repo.save(newEmployee)).thenReturn(newEmployee);
+//        then
+        Employee modifiedEmployee = service.editEmployee(1L, newEmployee);
+        assertSame(newEmployee, modifiedEmployee);
+
+    }
+
+    @Test
+    void givenWrongId_whenPutRequest_returnNotFound() {
+        when(repo.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () ->
+                service.editEmployee(1L, new Employee()));
+
+    }
+
+    @Test
+    void givenEmployeeObject_whenPostRequest_returnSuccess() {
+        when(repo.save(employee)).thenReturn(employee);
+        Employee retrievedEmployee = service.createEmployee(employee);
+        verify(repo, atLeastOnce()).save(employee);
+        assertSame(retrievedEmployee, employee);
+    }
+
+//    TODO: write a delete test
+    @Test
+    void givenCorrectId_whenDeleteRequest_returnSuccess() {
 
     }
 }
