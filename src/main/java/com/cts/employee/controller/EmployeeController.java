@@ -6,8 +6,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static com.cts.employee.Utils.EMPLOYEE_END_POINT;
 
@@ -18,7 +18,22 @@ public class EmployeeController  {
     @Autowired
     EmployeeService service;
 
-// TODO: unit tests
+
+    @GetMapping("/{name}")
+    public List<Employee> findByName(@PathVariable("name") String name) {
+        return service.findByName(name);
+    }
+
+    @GetMapping("/{department}")
+    public List<Employee> findByDepartment(@PathVariable("department") String department) {
+        return service.findByDepartment(department);
+    }
+
+    @GetMapping("/{dob}")
+    public List<Employee> findByDateOfBirth(@PathVariable("dob") LocalDate dateOfBirth) {
+        return service.findByDateOfBirth(dateOfBirth);
+    }
+
     @GetMapping("/{id}")
 //    /employees?name=bob
     public Employee getEmployee(@PathVariable("id") Long id) {

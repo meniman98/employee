@@ -18,9 +18,5 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
 
     List<Employee> findByNameIsIgnoreCase(@NonNull String name);
 
-    Optional<Employee> findByDateOfBirth(@NonNull LocalDate dateOfBirth);
-
-
-    @Override
-    Optional<Employee> findById(Long aLong);
+    List<Employee> findByDateOfBirth(@NonNull LocalDate dateOfBirth);
 }

@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -19,6 +20,39 @@ public class EmployeeServiceImpl implements EmployeeService {
     EmployeeRepo repo;
 
     public static final String EMPLOYEE_NOT_FOUND = "Employee with ID {0} was not found";
+
+    @Override
+    public List<Employee> findByDepartment(String department) {
+        List<Employee> employeeList = repo.findByDepartment(department);
+        if (employeeList.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    MessageFormat.format(
+                            "No employees were found in the {0} department", department));
+        }
+        return employeeList;
+    }
+
+    @Override
+    public List<Employee> findByName(String name) {
+        List<Employee> employeeList = repo.findByNameIsIgnoreCase(name);
+        if (employeeList.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    MessageFormat.format(
+                            "No employees were found with name {0}", name));
+        }
+        return employeeList;
+    }
+
+    @Override
+    public List<Employee> findByDateOfBirth(LocalDate dateOfBirth) {
+        List<Employee> employeeList = repo.findByDateOfBirth(dateOfBirth);
+        if (employeeList.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    MessageFormat.format(
+                            "No employees were found with a date of birth of {0}", dateOfBirth.toString()));
+        }
+        return employeeList;
+    }
 
     @Override
     public Employee getEmployee(Long id) {
