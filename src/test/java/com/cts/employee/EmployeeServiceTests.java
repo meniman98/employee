@@ -83,11 +83,12 @@ public class EmployeeServiceTests {
     void editEmployeeSuccess() {
 //        given
         Employee newEmployee = new Employee("Barack-Obama", BIRTHDAY, "politics");
+        Employee oldEmployee = new Employee("George-Washington", BIRTHDAY, "politics");
 //        when
-        when(repo.findById(1L)).thenReturn(Optional.of(employee));
+        when(repo.findById(100L)).thenReturn(Optional.of(oldEmployee));
         when(repo.save(newEmployee)).thenReturn(newEmployee);
 //        then
-        Employee modifiedEmployee = service.editEmployee(1L, newEmployee);
+        Employee modifiedEmployee = service.editEmployee(100L, newEmployee);
         assertSame(newEmployee, modifiedEmployee);
 
     }
