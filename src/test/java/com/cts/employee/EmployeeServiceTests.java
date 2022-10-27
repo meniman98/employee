@@ -109,42 +109,6 @@ public class EmployeeServiceTests {
         assertSame(retrievedEmployee, employee);
     }
 
-    @Test
-    void givenName_whenFindByName_returnEmployeeList() {
-//        given
-        Employee hunchoTheFirst = new Employee("Huncho", null, null);
-        Employee hunchoTheSecond = new Employee("Huncho", null, null);
-        Employee hunchoTheThird = new Employee("Huncho", null, null);
-        List<Employee> employeeList = List.of(hunchoTheFirst, hunchoTheSecond, hunchoTheThird);
-//        when
-        when(repo.findByNameIsIgnoreCase("Huncho")).thenReturn(employeeList);
-//        then
-        List<Employee> retrievedEmployees = service.findByName("Huncho");
-        assertThat(retrievedEmployees, everyItem
-                (hasProperty("name", is("Huncho"))));
-    }
-
-    @Test
-    void givenDepartment_whenFindByDepartment_returnEmployeeList() {
-//        when (employees all have the same department)
-        when(repo.findByDepartment("Engineering")).thenReturn(employeeList);
-//        then
-        List<Employee> retrievedEmployees = service.findByDepartment("Engineering");
-        assertThat(retrievedEmployees, everyItem
-                (hasProperty("department", is("Engineering"))));
-
-
-    }
-
-    @Test
-    void givenLocalDate_whenFindByDateOfBirth_returnEmployeeList() {
-//        when (all employees have the same birthday)
-        when(repo.findByDateOfBirth(BIRTHDAY)).thenReturn(employeeList);
-
-        List<Employee> retrievedEmployees = service.findByDateOfBirth(BIRTHDAY);
-        assertThat(retrievedEmployees, everyItem
-                (hasProperty("dateOfBirth", is(BIRTHDAY))));
-    }
 
 //    TODO: write a delete test
     @Test

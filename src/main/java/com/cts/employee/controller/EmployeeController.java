@@ -4,10 +4,7 @@ import com.cts.employee.model.Employee;
 import com.cts.employee.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.cts.employee.Utils.EMPLOYEE_END_POINT;
@@ -19,23 +16,6 @@ public class EmployeeController  {
     @Autowired
     EmployeeService service;
 
-
-    @GetMapping("/name={name}")
-    public List<Employee> findByName(@PathVariable("name") String name) {
-        return service.findByName(name);
-    }
-
-    @GetMapping("/department={department}")
-    public List<Employee> findByDepartment(@PathVariable("department") String department) {
-        return service.findByDepartment(department);
-    }
-
-    @GetMapping("/dob={dob}")
-    public List<Employee> findByDateOfBirth(
-            @PathVariable("dob")
-            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateOfBirth) {
-        return service.findByDateOfBirth(dateOfBirth);
-    }
 
     @GetMapping("/{id}")
 //    /employees?name=bob
