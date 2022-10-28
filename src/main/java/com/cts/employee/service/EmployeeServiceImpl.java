@@ -1,15 +1,19 @@
 package com.cts.employee.service;
 
 import com.cts.employee.model.Employee;
+import com.cts.employee.model.EmployeePage;
+import com.cts.employee.model.EmployeeSearchCriteria;
+import com.cts.employee.repo.EmployeeCriteriaRepo;
 import com.cts.employee.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 
 import java.text.MessageFormat;
-import java.util.List;
+
 
 
 @Service
@@ -17,6 +21,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     EmployeeRepo repo;
+
+    @Autowired
+    EmployeeCriteriaRepo criteriaRepo;
 
     public static final String EMPLOYEE_NOT_FOUND = "Employee with ID {0} was not found";
 
@@ -27,8 +34,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return repo.findAll();
+    public Page<Employee> getAllEmployees(EmployeePage employeePage,
+                                          EmployeeSearchCriteria searchCriteria) {
+        return criteriaRepo.findAllWithFilters(employeePage, searchCriteria);
     }
 
     @Override

@@ -1,11 +1,14 @@
 package com.cts.employee.controller;
 
 import com.cts.employee.model.Employee;
+import com.cts.employee.model.EmployeePage;
+import com.cts.employee.model.EmployeeSearchCriteria;
 import com.cts.employee.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 
 import static com.cts.employee.Utils.EMPLOYEE_END_POINT;
 
@@ -25,8 +28,9 @@ public class EmployeeController  {
 
 
     @GetMapping("/")
-    public List<Employee> getAllEmployees() {
-        return service.getAllEmployees();
+    public Page<Employee> getAllEmployees(EmployeePage employeePage,
+                                          EmployeeSearchCriteria searchCriteria) {
+        return service.getAllEmployees(employeePage, searchCriteria);
     }
 
 

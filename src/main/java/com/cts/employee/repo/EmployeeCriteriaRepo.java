@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class EmployeeCriteriaRepo {
+//    TODO use autowired
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
 
