@@ -7,9 +7,6 @@ import java.util.Optional;
 // TODO: entity manager spring boot
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
 
-
-
-
     @Override
     Optional<Employee> findById(Long aLong);
 }
