@@ -10,13 +10,14 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Repository
 public class EmployeeCriteriaRepo {
-//    TODO use autowired
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
 
@@ -41,6 +42,25 @@ public class EmployeeCriteriaRepo {
         return new PageImpl<>(typedQuery.getResultList(), pageable, employeesCount);
     }
 
+    private Predicate getPredicate(EmployeeSearchCriteria searchCriteria, Root<Employee> employeeRoot) {
+        List<Predicate> predicateList = new ArrayList<>();
+
+        if (Objects.nonNull(searchCriteria.getName())) {
+            predicateList.add(criteriaBuilder.like(
+                    employeeRoot.get("name"),
+                    "%" + searchCriteria.getName() + "%")
+            );
+        }
+
+        if (Objects.nonNull(searchCriteria.getDepartment())) {
+            predicateList.add(criteriaBuilder.like(
+                    employeeRoot.get("department"),
+                    "%" + searchCriteria.getDepartment() + "%")
+            );
+        }
+        return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
+    }
+
     private long getEmployeesCount(Predicate predicate) {
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
         Root<Employee> countRoot = countQuery.from(Employee.class);
@@ -63,22 +83,5 @@ public class EmployeeCriteriaRepo {
         else {
             query.orderBy(criteriaBuilder.desc(employeeRoot.get(employeePage.getSortBy())));
         }
-    }
-
-    private Predicate getPredicate(EmployeeSearchCriteria searchCriteria, Root<Employee> employeeRoot) {
-        List<Predicate> predicateList = new ArrayList<>();
-
-        if (Objects.nonNull(searchCriteria.getName())) {
-            predicateList.add(criteriaBuilder.like(
-                    employeeRoot.get("name"), "%" + searchCriteria.getName() + "%")
-            );
-        }
-
-            if (Objects.nonNull(searchCriteria.getDepartment())) {
-                predicateList.add(criteriaBuilder.like(
-                        employeeRoot.get("department"), "%" + searchCriteria.getDepartment() + "%")
-                );
-        }
-            return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
     }
 }

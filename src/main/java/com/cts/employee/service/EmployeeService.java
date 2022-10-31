@@ -4,6 +4,7 @@ import com.cts.employee.model.Employee;
 import com.cts.employee.model.EmployeePage;
 import com.cts.employee.model.EmployeeSearchCriteria;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 public interface EmployeeService {
 
