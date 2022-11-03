@@ -68,7 +68,7 @@ class EmployeeApplicationTests {
         mockMvc.perform(get(EMPLOYEE_END_POINT + "/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$", isA(Iterable.class)))
+                .andExpect(jsonPath("$.content", isA(Iterable.class)))
                 .andDo(print());
     }
 
@@ -145,58 +145,8 @@ class EmployeeApplicationTests {
                 .andDo(print());
     }
 
-    @Test
-    void givenName_whenGetRequest_returnEmployeeListWithMatchingNames() throws Exception {
-//        given
-        Employee hunchoTheFirst = new Employee(
-                "Huncho", LocalDate.of(2000, 1, 1), "Science");
-        Employee hunchoTheSecond = new Employee(
-                "Huncho", LocalDate.of(2001, 1, 1), "Politics");
-        Employee hunchoTheThird = new Employee(
-                "Huncho", LocalDate.of(2002, 1, 1), "Engineering");
-        List<Employee> employeeList = List.of(hunchoTheFirst, hunchoTheSecond, hunchoTheThird);
-        for (Employee employee : employeeList) {
-            repo.save(employee);
-        }
-//        when
-//        TODO: check that each name is "Huncho"
-        mockMvc.perform(get(EMPLOYEE_END_POINT + "/name=Huncho")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", isA(Iterable.class)))
-                .andDo(print());
-    }
 
-    @Test
-    void givenDepartment_whenGetRequest_returnEmployeesWithMatchingDepartment() throws Exception {
-        //        given
-        Employee employee1 = new Employee(
-                "Huncho", LocalDate.of(2000, 1, 1), "Engineering");
-        Employee employee2 = new Employee(
-                "Joe-Biden", LocalDate.of(2001, 1, 1), "Engineering");
-        Employee employee3 = new Employee(
-                "Hilary-Clinton", LocalDate.of(2002, 1, 1), "Engineering");
-        List<Employee> employeeList = List.of(employee1, employee2, employee3);
-        for (Employee employee : employeeList) {
-            repo.save(employee);
-        }
-//        when
-//        TODO: check that each department is "Engineering"
-        mockMvc.perform(get(EMPLOYEE_END_POINT + "/department=engineering")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", isA(Iterable.class)))
-                .andDo(print());
-    }
 
-    @Test
-    void givenDateOfBirth_whenGetRequest_returnEmployeesWithMatchingDateOfBirth() throws Exception {
-        mockMvc.perform(get(EMPLOYEE_END_POINT + "/dob=1998-05-08")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-//                TODO: check that each birthday is the same
-                .andExpect(jsonPath("$", isA(Iterable.class)))
-                .andDo(print());
-    }
+
 
 }
