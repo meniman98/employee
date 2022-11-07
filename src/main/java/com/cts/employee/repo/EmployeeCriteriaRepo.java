@@ -65,8 +65,10 @@ public class EmployeeCriteriaRepo {
     private long getEmployeesCount(Predicate predicate) {
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
         Root<Employee> countRoot = countQuery.from(Employee.class);
-        countQuery.select(criteriaBuilder.count(countRoot)).where(predicate);
-        return entityManager.createQuery(countQuery).getSingleResult();
+        countQuery.where(predicate);
+        TypedQuery<Long> typedQuery = entityManager.createQuery(countQuery);
+//        countQuery.select(criteriaBuilder.count(countRoot)).where(predicate);
+        return typedQuery.getSingleResult();
     }
 
     private Pageable getPageable(EmployeePage employeePage) {
